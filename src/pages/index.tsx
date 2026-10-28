@@ -1,35 +1,108 @@
+import { useCallback, useEffect, useState } from 'react';
+import { OSName, CPUArch } from 'ua-parser-js/enums';
 import { classNames } from '@junipero/core';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
-import Heading from '@theme/Heading';
+
+import { useUserAgent } from '../services/hooks';
+import HomeHero from '../components/HomeHero';
 
 const Home = () => {
-  const { siteConfig } = useDocusaurusContext();
+  const ua = useUserAgent();
+  const [platformLink, setPlatformLink] = useState<string | null>(null);
+
+  const getOS = useCallback(() => {
+    switch (ua.getOS().name) {
+      case OSName.WINDOWS:
+        return 'win32';
+      case OSName.MACOS:
+        return 'macos';
+      default:
+        return 'unknown';
+    }
+  }, [ua]);
+
+  const getCPUArch = useCallback(async () => {
+    const cpu = await ua.getCPU().withClientHints();
+
+    switch (cpu.architecture) {
+      case CPUArch.ARM_64:
+        return 'arm64';
+      case CPUArch.X86_64:
+        return 'x64';
+      default:
+        return 'unknown';
+    }
+  }, [ua]);
+
+  const resolvePlatformLink = useCallback(async () => {
+    const { tag_name: name } = await fetch(
+      'https://api.github.com/repos/dackmin/gba-studio/releases/latest'
+    ).then(res => res.json());
+
+    const os = getOS();
+    const arch = await getCPUArch();
+
+    if (os === 'unknown' || arch === 'unknown') {
+      return null;
+    }
+
+    setPlatformLink(
+      `https://github.com/dackmin/gba-studio/releases` +
+        `/download/${name}` +
+        `/gba-studio-${name.replace(/^v/, '')}-${os}-${arch}.zip`
+    );
+  }, [getOS, getCPUArch]);
+
+  useEffect(() => {
+    resolvePlatformLink();
+  }, [resolvePlatformLink]);
 
   return (
     <Layout
-      title={siteConfig.title}
-      description="Description will go into a meta tag in <head />"
+      description="GB Studio but worse and for the GBA"
     >
-      <header className={classNames('hero hero--primary')}>
+      <header className="bg-concrete dark:bg-onyx">
         <div className="container">
-          <Heading as="h1" className="hero__title">
-            { siteConfig.title }
-          </Heading>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div>
-            <Link
-              className="button button--secondary button--lg"
-              to="/docs">
-              Docusaurus Tutorial - 5min ⏱️
-            </Link>
+          <div
+            className={classNames(
+              'flex flex-col-reverse xl:grid xl:grid-cols-2 justify-center items-center gap-8',
+              'py-12 xl:py-48'
+            )}
+          >
+            <div className="flex flex-col gap-8 px-12">
+              <h1>Create real GBA games in minutes with zero coding knowledge.</h1>
+              <p>
+                GBA Studio is a no-code, event-based game creation tool for the Game Boy Advance.
+                Much like { ' ' }
+                <a href="https://gbstudio.dev" target="_blank" rel="noopener noreferrer">
+                  GB Studio
+                </a>, but badly made.
+              </p>
+              <div className="flex items-center gap-4">
+                <a
+                  className="button button--primary button--lg"
+                  href={platformLink || 'https://github.com/dackmin/gba-studio/releases/latest'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download for { ua.getOS().name }
+                </a>
+                <a
+                  href="https://github.com/dackmin/gba-studio/releases/latest"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Other platforms
+                </a>
+              </div>
+            </div>
+            <div className="flex justify-center xl:justify-end">
+              <HomeHero />
+            </div>
           </div>
         </div>
       </header>
-      <main>
-        <h1>Hello world</h1>
-      </main>
+      <main />
     </Layout>
   );
 };

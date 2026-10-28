@@ -1,0 +1,16 @@
+@layer theme, base, components, utilities;
+
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@plugin "@junipero/tailwind-plugin";
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+@import "@radix-ui/themes/styles.css";
+
+:root {
+  --ifm-color-primary: #7C28BB;
+  --ifm-color-primary-dark: #4b216e;
+  --ifm-color-primary-darker: #301248;
+  --ifm-button-color: #FFF;
+}
