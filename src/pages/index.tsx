@@ -2,11 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { OSName, CPUArch } from 'ua-parser-js/enums';
 import { classNames } from '@junipero/core';
 import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 
 import { useUserAgent } from '../services/hooks';
 import HomeHero from '../components/HomeHero';
-import { Card } from '@radix-ui/themes';
-import Link from '@docusaurus/Link';
 
 const Home = () => {
   const ua = useUserAgent();
