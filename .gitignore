@@ -150,3 +150,7 @@ vite.config.ts.timestamp-*
 
 # MacOS
 .DS_Store
+
+# Docusaurus
+.docusaurus/
+build

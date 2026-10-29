@@ -22,6 +22,7 @@ const config: Config = {
   // GitHub pages deployment config.
   organizationName: 'dackmin',
   projectName: 'gba-studio-docs',
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
 
