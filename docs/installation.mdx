@@ -3,3 +3,60 @@ sidebar_position: 1
 ---
 
 # Installation
+
+To install GBA Studio, download the latest version from
+[Itch.io](https://dackmin.itch.io/gba-studio) or
+[GitHub](https://github.com/dackmin/gba-studio/releases/latest) and follow the installation
+instructions for your operating system.
+
+## macOS
+
+1. Download `gbastudio-x.x.x-macos-arm64.zip` or `gbastudio-x.x.x-macos-x64.zip` depending on your architecture (if you're not sure, download the `arm64` version first).
+2. Unzip the downloaded file.
+3. Move the `GBAStudio.app` to your Applications folder.
+4. Open `GBAStudio.app` to start creating games!
+
+If you encounter any build issue, try installing XCode's command line tools by running the following command in a terminal and try again:
+
+```bash
+xcode-select --install
+```
+
+## Windows
+
+1. Download either `GBAStudio-x.x.x.Setup.exe` (installer) or `gba-studio-x.x.x-win32-x64.zip` (portable version).
+2. If you downloaded the installer, run it and follow the instructions.
+3. If you downloaded the portable version, unzip the file and run `GBAStudio.exe` to start creating games.
+
+## Linux (Ubuntu/Debian)
+
+1. Download `gba-studio-x.x.x-linux-arm64.deb` or `gba-studio-x.x.x-linux-x64.deb` depending on your architecture.
+2. Install the downloaded package using the following command:
+
+```bash
+sudo dpkg -i gba-studio-x.x.x-linux-<arch>.deb
+```
+
+Replace `<arch>` with `arm64` or `x64` as appropriate.
+
+3. Run `GBAStudio`
+
+If you encounter any build issues, try installing `build-essential` using the following command in a terminal and try again:
+
+```bash
+sudo apt update
+sudo apt install build-essential
+```
+
+## Linux (Fedora/RPM)
+
+1. Download `gba-studio-x.x.x-linux-arm64.rpm` or `gba-studio-x.x.x-linux-x64.rpm` depending on your architecture.
+2. Install the downloaded package using the following command:
+
+```bash
+sudo rpm --ignoreos -i gba-studio-x.x.x-linux-<arch>.rpm
+```
+
+Replace `<arch>` with `arm64` or `x64` as appropriate.
+
+3. Run `GBAStudio`

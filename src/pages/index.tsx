@@ -5,6 +5,8 @@ import Layout from '@theme/Layout';
 
 import { useUserAgent } from '../services/hooks';
 import HomeHero from '../components/HomeHero';
+import { Card } from '@radix-ui/themes';
+import Link from '@docusaurus/Link';
 
 const Home = () => {
   const ua = useUserAgent();
@@ -102,7 +104,64 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <main />
+      <main className="container py-12 xl:py-24">
+        <h2 className="text-center mb-12">Create <strong>any</strong> type of 2D game</h2>
+        <div className="grid xl:grid-cols-3 gap-12">
+          <figure>
+            <a
+              className="block group"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://widseylabs.itch.io/pocket-valley-essentials"
+            >
+              <img
+                src="/images/top-down.png"
+                alt="Example Top-Down 2D Game"
+                className="rounded-xl group-hover:scale-102 transition-transform duration-200"
+              />
+            </a>
+            <figcaption className="text-center">Top-Downs/Adventures</figcaption>
+          </figure>
+          <figure>
+            <a
+              className="block group"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://shackhal.itch.io/multi-platformer-tileset"
+            >
+              <img
+                src="/images/platformer.png"
+                alt="Example Side-Scroller 2D Game"
+                className="rounded-xl group-hover:scale-102 transition-transform duration-200"
+              />
+            </a>
+            <figcaption className="text-center">Side-Scrollers/Platformers</figcaption>
+          </figure>
+          <figure>
+            <a
+              className="block group"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://everyday-hologram.itch.io/parallax-city-background"
+            >
+              <img
+                src="/images/pnc.png"
+                alt="Example Point-and-Click 2D Game"
+                className="rounded-xl group-hover:scale-102 transition-transform duration-200"
+              />
+            </a>
+            <figcaption className="text-center">Point-and-Clicks</figcaption>
+          </figure>
+        </div>
+        <div className="text-center mt-12">
+          <Link
+            className="button button--primary button--lg"
+            to="/docs"
+          >
+            Get Started
+          </Link>
+        </div>
+      </main>
     </Layout>
   );
 };

@@ -1,0 +1,57 @@
+
+
+# Technical Details
+
+Most of you are here to create games without having to look under the hood, but for the curious
+ones, here's a brief overview of how everything works.
+
+## Architecture
+
+GBA Studio is mostly an Electron app with a CLI companion. You can either use the app itself to
+create games, or write JSON files manually to define your game's structure and content and build
+the game using the CLI.
+
+## Engine
+
+During build, GBA Studio transforms JSON content files into C++ code using
+[Handlebars](https://handlebarsjs.com/) templates.
+
+For example, here's the code used to define the `fade-in` event:
+
+```cpp
+{{else if (eq this.type "fade-in")}}
+{{>valuePartial prefix=(concat ../prefix "_" @index "_duration") value=this.duration}}
+constexpr bn::string_view {{../prefix}}_{{@index}}_type = "fade-in";
+BN_DATA_EWRAM neo::types::fade_event {{../prefix}}_{{@index}}({{../prefix}}_{{@index}}_type, &{{../prefix}}_{{@index}}_duration_value);
+```
+
+The C++ code uses [Butano](https://github.com/GValiente/butano), an extraordinary project made by
+Gustavo Valiente that provides a high-level framework for developing Game Boy Advance games.
+
+Almost everything is put into the ROM (using `constexpr`), with some exceptions for events that
+manipulate runtime data that are put into EWRAM (using the `BN_DATA_EWRAM` macro).
+
+> Disclaimer: Last time I did C++ was during my license degree, so doing all of this was a real
+challenge. Expect things to be a bit messy and not perfectly optimized in a C++ fashion (pointers
+are my nemesis).
+
+## Dynamic Values
+
+Because I wanted GBA Studio to be almost equal to GB Studio (emphasis on almost), I also had to
+implement "Dynamic Values" that allow to use runtime data (variable, player position, etc.) without
+any code knowledge by the end user.
+
+In order to do this, and because we don't know the type of these dynamic values at compile time,
+we need to store every types into one common structure.
+
+For example, if I set my `fade-in` event duration to `200`, in the generated C++ code, it will be
+stored as:
+- `int` -> `200`
+- `bn::string_view` -> `"200"`
+- `bool` -> `true`
+- `bn::fixed` -> `200.0`
+
+This drawback is a necessary evil to allow dynamic values to be used seamlessly within the engine,
+especially into `if` conditions:
+
+![If Conditions Example](/images/if.png)

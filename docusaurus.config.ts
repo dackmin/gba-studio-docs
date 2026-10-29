@@ -118,7 +118,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} GBA Studio.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Ugo Stephant`,
     },
     prism: {
       theme: prismThemes.github,
