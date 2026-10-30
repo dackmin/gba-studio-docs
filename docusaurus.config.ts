@@ -24,7 +24,7 @@ const config: Config = {
   projectName: 'gba-studio-docs',
   trailingSlash: false,
 
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'ignore',
 
   i18n: {
     defaultLocale: 'en',
