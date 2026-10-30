@@ -1,0 +1,180 @@
+---
+sidebar_position: 2
+---
+
+# Adding Content
+
+Now that you've created an empty scene with just a dialog in it, you can start adding more content
+to it.
+
+## Adding a Background
+
+You can add a background to your scene by selecting `File > Import > Background` from the menu
+(or going to the `Images` tab and clicking the `+` button right to `Backgrounds`) and choosing an
+image file from your computer.
+
+:::tip
+If you don't have one, you can download [this one](/images/map_manor.bmp) I made for one of my own
+games.
+:::
+
+Backgrounds have a few requirements (see the [Backgrounds documentation](/docs/content/backgrounds)
+for more details):
+- They must be at least 256x256 pixels in size.
+- They should have a maximum of ~1000 tiles (a tile is an 8x8 pixel block of pixels, counted the
+same in every direction).
+
+<img src="/images/background-import.png" alt="Import Background" className="rounded-xl" height={400} />
+
+<br /><br />
+
+Once imported, you can assign it to your scene through the Right Sidebar under the background
+property.
+
+:::warning
+Big backgrounds will be split into multiple 256x256 smaller backgrounds automatically, but keep in
+mind that VRAM in the GBA is very limited, and that 4 backgrounds will be displayed at a time when
+splitting, so the ~1000 tile limit still applies to the combined total of all visible backgrounds
+(+ any additional sprite or actor present in your scene).
+:::
+
+## Adding a Player
+
+You can now set your scene type to `Top Down` (or whatever grinds your gears) to automatically add
+a player.
+You'll notice that an arrow has appeared: this is your player, with its default sprite.
+
+<div className="flex items-center gap-12">
+  <img src="/images/player-arrow.png" alt="Player Default Sprite" className="rounded-xl" height={300} />
+  <img src="/images/player-props.png" alt="Player Properties" className="rounded-xl" height={300} />
+</div>
+
+<br /><br />
+
+Now that your player exists, you can import a sprite by selecting `File > Import > Sprite` from the
+menu (or going to the `Images` tab and clicking the `+` button right to `Sprites`) and choosing an
+image file from your computer.
+
+:::tip
+If you don't have a sprite on hand, you can download [this one](/images/player.bmp) I used for one
+of my own games
+(courtesy of [The Pixel Nook](https://the-pixel-nook.itch.io/retro-rpg-character-pack)).
+:::
+
+Sprites also have a few requirements (see the [Sprites documentation](/docs/content/sprites) for
+more details):
+- They must be multiples of 8px, 16px or 32px in either width or height (ex: if you want a 16x16
+sprite and have 10 frames horizontally, it should be 160x16px)
+- They need a transparency color (usually green #00FF00).
+
+<img src="/images/sprite-import.png" alt="Import Sprite" className="rounded-xl" height={500} />
+
+<br /><br />
+Now that you've imported your sprite, you can assign it to your player through the Right Sidebar
+under the sprite property.
+
+Run your game to see your player with the newly assigned sprite in action:
+
+<video controls className="rounded-xl" height={400}>
+  <source src="/videos/player-preview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+<br /><br />
+:::info
+As you can see, it doesn't have animations yet, but you can easily set them up later in the `Images`
+tab and the `Animations Editor` panel. See the [Sprites documentation](/docs/content/sprites) for
+more details.
+:::
+
+## Adding Collisions
+
+Now that you have a colorful scene and a player, you can start adding collisions to your scene.
+Collisions define which parts of your scene the player will be blocked by (e.g walls, ground or
+obstacles).
+
+Start by selecting the `Collisions` brush in the toolbar (or use the `C` shortcut), and left click
+on any part of your scene where you want to add a collision block. This will add a semi-transparent
+red square indicating the collision area (add as many as you want):
+
+<img src="/images/collisions.png" alt="Collisions Preview" className="rounded-xl" height={400} />
+
+<br /><br />
+
+:::tip
+Collision painting is very easy: left click to add collisions and right click to remove them.
+See the [Collisions documentation](/docs/content/collisions) for more details.
+:::
+
+Run your game again to discover how collisions affect your player's movements:
+
+<video controls className="rounded-xl" height={400}>
+  <source src="/videos/player-collisions.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+## Adding Actors
+
+Actors are characters or objects in your scene that your player can interact with.
+To add an actor, select the `Add` tool, select `Actor` and click anywhere on your scene.
+
+<img src="/images/add-actor.png" alt="Add an Actor" className="rounded-xl" height={400} />
+
+<br /><br />
+
+You can then assign a sprite, set its position, and configure its properties.
+
+<img src="/images/actor-props.png" alt="Actor Properties" className="rounded-xl" height={500} />
+
+<br /><br />
+For this tutorial, we'll add a simple `Show Dialog` event to our actor, in its `On Interact` events
+tab in the Right Sidebar.
+
+<img src="/images/actor-dialog.png" alt="Actor Show Dialog Event" className="rounded-xl" height={500} />
+
+<br /><br />
+
+Aaaaand run your game again to see it come to life (press `A` in front of your actor to interact):
+
+<video controls className="rounded-xl" height={400}>
+  <source src="/videos/actor-dialog.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+<br /><br />
+
+:::info
+If an actor's sprite has enough frames to detect directional movement, it will automatically face
+the correct direction when the player interacts with it (this can be disabled).
+:::
+
+## Adding Sensors
+
+Sensors are invisible areas in your scene that can trigger events when the player enters/exits or
+interacts with them.
+
+To add a sensor, select the `Add` tool, select `Sensor` and click anywhere on your scene. It will be
+represented by a semi-transparent orange square/rectangle.
+You can then resize and position the sensor as needed, and configure its events in the Right
+Sidebar.
+
+<img src="/images/add-sensor.png" alt="Add a Sensor" className="rounded-xl" height={400} />
+
+<br /><br />
+
+For this tutorial, we'll be adding `Fade Out` & `Go To Scene` events to our sensor to showcase a
+scene transition when the player enters the sensor.
+
+<img src="/images/sensor-events.png" alt="Sensor Events" className="rounded-xl" height={500} />
+
+Inside the `Go To Scene` event, select the same scene you are working on, and just set a different
+starting point to see the difference.
+
+Then run your game again to see the scene transition in action.
+
+<video controls className="rounded-xl" height={400}>
+  <source src="/videos/sensor-preview.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+Congrats again, you've made your first interactive game 🎉

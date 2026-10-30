@@ -70,7 +70,7 @@ const Home = () => {
               'py-12 xl:py-48'
             )}
           >
-            <div className="flex flex-col gap-8 px-12">
+            <div className="flex flex-col gap-8 px-4 xl:px-12">
               <h1>Create real GBA games in minutes with zero coding knowledge.</h1>
               <p>
                 GBA Studio is a no-code, event-based game creation tool for the Game Boy Advance.

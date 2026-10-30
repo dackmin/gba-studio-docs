@@ -1,0 +1,48 @@
+# Scenes
+
+Scenes in GBA Studio (just like in GB Studio) define the type of game you make.
+
+<img src="/images/scene-props.png" alt="Scene Properties" className="rounded-xl" width={300} />
+
+## Scene Types
+
+Here are the different scene types you can choose from:
+- **Logos** (default): A scene typically used to display logos or introductory screens at the start
+or end of the game.
+- **Top-Down**: A top-down view scene, typically used for RPGs or simple grid based games
+(like classic Pokémon games).
+- **Adventure**: Same as top-down, but typically used for adventure games where movements are pixel
+based (like old Zelda games).
+- **Side-Scroller**: A side-scrolling view scene, typically used for platformer games (like classic
+Mario or Sonic games).
+- **Point & Click**: Instead of controlling a character directly, the player is a cursor that
+interacts with the environment by clicking on objects or locations (like Monkey Island).
+
+:::tip
+Games can have multiple scenes of different types, allowing you to mix and match various gameplay
+styles within the same game.
+Feel free to experiment and add a splash of razzle-dazzle!
+:::
+
+## Backgrounds
+
+Backgrounds in GBA Studio define the size and the visual appearance of your scene.
+They are imported in the Assets panel and have various restrictions & limitations, see the
+[Backgrounds documentation](/docs/assets/backgrounds) for more details.
+
+<img src="/images/scene-background.png" alt="Scene Backgrounds" className="rounded-xl" height={300} />
+
+<br /><br />
+
+:::warning
+When changing the scene's background, collisions won't be automatically removed, but will not
+correspond to the new background's layout either.
+Please make sure to adjust the collisions manually after changing the background to match the
+new layout.
+:::
+
+## HUD
+
+The HUD (Heads-Up Display) in GBA Studio is used to display important information to the player,
+such as health, score, or other runtime-specific data.
+See the [HUD documentation](/docs/content/hud) for more details.

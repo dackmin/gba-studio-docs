@@ -1,0 +1,49 @@
+---
+sidebar_position: 1
+---
+
+# Creating a Scene
+
+You can easily create a new scene in GBA Studio by clicking the Add Tool in the Editor toolbar and
+selecting "Scene" from the available options:
+
+<img src="/images/add-scene.png" alt="Add Tool > Scene" className="rounded-xl" height={300} />
+
+<br /><br />
+
+Once you clicked on the canvas to add your scene, you'll notice that the created scene is just a big
+black box (this is just the default background):
+
+<img src="/images/empty-scene.png" alt="Empty Scene" className="rounded-xl" height={300} />
+
+## Adjusting Scene Properties
+
+You now have access to the scene's properties inside the Right Sidebar, where you can modify various
+settings such as the scene's type, background, HUD, and events (see the [Scenes documentation](/docs/content/scenes) for more details).
+
+<img src="/images/scene-props.png" alt="Scene Properties" className="rounded-xl" width={300} />
+
+As you can see, the events list is empty for a new scene.
+You can start by adding a `Fade In` event to gradually display the scene when it is first loaded.
+
+:::info
+I could have made this behavior the default, but I wanted to give creators the flexibility to
+control how and when scenes appear (even I needed various fade durations for my own games).
+This way, you can choose to add different types of transitions or effects based on your game's needs.
+:::
+
+And then add a `Show Dialog` event to start by displaying a message:
+
+<img src="/images/show-dialog.png" alt="Show Dialog Event" className="rounded-xl" height={500} />
+
+## Building the game
+
+Once you have added the necessary events to your scene, you can build and run your game to see the
+changes in action.
+
+Click the `Play` button in the Left Sidebar and wait for the build to finish. You should end up
+on the Emulator view seeing your first event:
+
+<img src="/images/emulator.png" alt="Emulator View" className="rounded-xl" height={400} />
+
+Congrats! You've actually made a game 🎉
