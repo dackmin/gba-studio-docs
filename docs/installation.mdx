@@ -11,7 +11,7 @@ instructions for your operating system.
 
 ## macOS
 
-1. Download `gbastudio-x.x.x-macos-arm64.zip` or `gbastudio-x.x.x-macos-x64.zip` depending on your architecture (if you're not sure, download the `arm64` version first).
+1. Download `gba-studio-x.x.x-macos-arm64.zip` or `gba-studio-x.x.x-macos-x64.zip` depending on your architecture (if you're not sure, download the `arm64` version first).
 2. Unzip the downloaded file.
 3. Move the `GBAStudio.app` to your Applications folder.
 4. Open `GBAStudio.app` to start creating games!
@@ -60,3 +60,19 @@ sudo rpm --ignoreos -i gba-studio-x.x.x-linux-<arch>.rpm
 Replace `<arch>` with `arm64` or `x64` as appropriate.
 
 3. Run `GBAStudio`
+
+## Troubleshooting
+
+### Linux
+
+If you encounter any issues (crash or glitches) running GBA Studio on Linux, especially if you use Wayland, try running it with the `--disable-gpu-sandbox` flag:
+
+```bash
+./gba-studio --disable-gpu-sandbox
+```
+
+Or try forcing OpenGL instead of Vulkan by running:
+
+```bash
+WAYLAND_ANGLE=opengl ./gba-studio
+```
