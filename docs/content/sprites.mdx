@@ -1,0 +1,33 @@
+# Sprites
+
+Much like [Actors](/docs/content/actors), Sprites represent visual elements within the scene that
+can be animated and, eventually, interacted with. They are much simpler code-wise compared to
+actors, so if all you need is a visual element without complex behavior, Sprites are the way to go.
+
+<img src="/images/sprites.png" alt="Sprites" className="rounded-xl" height={400} />
+
+## Properties
+
+### X/Y
+
+> Default: 0,0
+
+These properties define the position and size of the sprite within the scene. `X` and `Y` set
+the top-left corner of the sprite, while `Width` and `Height` determine its dimensions. They
+are all measured in tiles.
+
+### Drawing Priority
+
+> Default: 2
+
+The drawing priority determines whether the sprite is drawn in front of or behind other elements on
+the screen (if you're used to CSS' `z-index`, this is the same, but reversed).
+
+The lower the drawing priority, the more "in front" the sprite will be drawn compared to other elements.
+
+## Events
+
+Sprites have three types of events:
+- **On Init**: Triggered when the scene starts
+- **On Interact**: Triggered when the player interacts with the sprite (using the A button)
+- **On Collide**: Triggered when the player collides with the sprite.

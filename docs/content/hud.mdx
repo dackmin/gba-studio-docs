@@ -1,0 +1,29 @@
+# HUD
+
+The HUD (Heads-Up Display) in GBA Studio represents the on-screen interface elements that provide
+information to the player, such as health, score, and other game-specific indicators.
+
+HUD's do not live in the scene like actors or the player, they follow the camera instead.
+
+You can only have one HUD per scene.
+
+<div className="flex flex-col xl:flex-row items-center gap-4">
+<img src="/images/hud.png" alt="HUD example" height={300} className="rounded-xl" />
+<img src="/images/hud-preview.png" alt="HUD Preview" height={300} className="rounded-xl" />
+</div>
+
+## Content
+
+HUDs can contain two types of elements:
+- **Texts**: Displays textual information, such as scores, health, or other game-specific data.
+- **Sprites**: Displays graphical elements, such as icons, characters, or other visual indicators.
+
+## Events
+
+Much like [Scenes](./scenes), HUDs have two different event categories:
+- **On Init**: Triggered when the HUD is first initialized (right after the scene's own On Init events).
+- **On Update**: Triggered every frame while the HUD is active, allowing you to update HUD elements dynamically.
+
+:::tip
+Because `On Update` events are computationally expensive, GBA Studio also provides an [`On Variable Change`](./events#on-variable-change) event that can be added to the On Init events and triggered whenever a specific variable changes, allowing you to update HUD elements only when necessary, without having to check every frame.
+:::

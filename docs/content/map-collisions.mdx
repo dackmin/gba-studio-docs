@@ -1,0 +1,47 @@
+# Map Collisions
+
+Map collisions determine how the player will be able to navigate within the scene. See them as
+walls, ground or obstacles.
+
+Every scene type is grid-based (except `logos`), so collisions are defined for each individual tile.
+
+<img src="/images/collisions.png" alt="Map Collisions" className="rounded-xl" height={400} />
+
+<br /><br />
+
+:::info
+This topic does not cover actor-to-actor-specific collisions. See
+[Collision Groups](/docs/content/collision-groups) for more information.
+:::
+
+<br /><br />
+
+<img src="/images/collisions-toolbar.png" alt="Collision Types" className="rounded-xl" height={60} />
+
+<br /><br />
+
+There are 9 different types of collisions:
+- **Blocks**: Prevent the player from moving through them, acting as walls or obstacles.
+- **Left & Right Slopes**: Allow the player to walk up or down inclined surfaces.
+- **Pass-through blocks**: Allow the player to jump through them from a direction but stand on
+them from the opposite direction.
+- **Pass-through slopes**: Allow the player to walk up or down inclined surfaces while still being
+able to pass through them from certain directions.
+
+:::info
+Blocking tiles are represented on the scene preview as transparent red rectangles or slopes, while
+pass-through tiles are transparent green.
+:::
+
+
+:::tip
+When using the Collision Painting tool, use the left click to paint collisions and the right click
+to erase them.
+:::
+
+<br />
+
+If you are too deep into collision painting and not satisfied with the result, you can erase
+everything using the `Select` tool, right-clicking the scene and choosing `Reset Collisions`.
+
+<img src="/images/reset-collisions.png" alt="Reset Collisions" className="rounded-xl" height={200} />

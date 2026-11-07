@@ -1,0 +1,21 @@
+# Sensors
+
+Sensors are mostly used to execute specific events when the player interacts with certain areas of
+the scene.
+
+<img src="/images/sensors.png" alt="Sensors" className="rounded-xl" height={400} />
+
+## Properties
+
+### X/Y/Width/Height
+
+These properties define the position and size of the sensor area within the scene. `X` and `Y` set
+the top-left corner of the sensor, while `Width` and `Height` determine its dimensions. They
+are all measured in tiles.
+
+## Events
+
+Sensors can be activated by three types of triggers:
+- **On Enter**: Triggered when the player enters the sensor area.
+- **On Exit**: Triggered when the player leaves the sensor area.
+- **On Interact**: Triggered when the player interacts with the sensor area (using the A button)

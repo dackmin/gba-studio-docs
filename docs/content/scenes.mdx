@@ -52,7 +52,7 @@ Scenes are the core building blocks of your game, defining the environment, layo
 They can contain a variety of elements:
 - **Player**: The main character controlled by the player within the scene (see [Player documentation](/docs/content/player))
 - **Actors**: Non-player characters or interactive objects that populate the scene, typically NPCs but can also include interactive objects like levers, springs, etc. (see [Actors documentation](/docs/content/actors))
-- **Collisions**: Basically walls (see [Collisions documentation](/docs/content/collisions))
+- **Collisions**: Basically walls (see [Collisions documentation](/docs/content/map-collisions))
 - **Sensors**: Invisible triggers that can detect the presence of the player and trigger events (see [Sensors documentation](/docs/content/sensors))
 - **Sprites**: Very close to actors, but primarily used for visual representation rather than interaction (see [Sprites documentation](/docs/content/sprites))
 
@@ -174,3 +174,15 @@ scenes:
 Determines amount of slowdown effect applied to the player character's movement when changing
 directions.
 The higher the value, the more pronounced the slowdown effect will be.
+
+## Events
+
+Scene have two event categories:
+- **On Init**: Triggered when the scene starts
+- **On Update**: Triggered every frame while the scene is active
+
+:::warning
+On Update events are triggered **every frame** while the scene is active, so be cautious with heavy
+computations to avoid performance issues.
+:::
+

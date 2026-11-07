@@ -1,0 +1,16 @@
+# Sprites
+
+Sprites are graphical elements (animated or not) used to represent characters, objects, or other
+visual components in your game.
+
+<img src="/images/sprite-import.png" alt="Sprite Preview" className="rounded-xl" height={600} />
+
+<br /><br />
+
+They are usually created in tools like [Aseprite](https://www.aseprite.org/) or LibreSprite (https://libresprite.github.io/), and arranged in sprite sheets for animations.
+
+## Limitations
+
+- Sprites (not spritesheets) size must be one of [Butano's allowed sprite sizes](https://gvaliente.github.io/butano/classbn_1_1sprite__shape__size.html).
+- Spritesheets should be arranged in a grid (horizontal or vertical) to ensure proper animation frames alignment.
+- Sprites can be transparent but transparency color must be a valid RGB color (not alpha), usually <span className="text-[#00FF00]">#00FF00</span> (full green).

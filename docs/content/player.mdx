@@ -1,0 +1,43 @@
+# Player
+
+The player in GBA Studio represents the main character controlled by the user. It is usually a
+sprite that can move around the screen and interact with the environment.
+
+<img src="/images/player.png" alt="Player form example" height={400} className="rounded-xl" />
+
+## Properties
+
+### Start X/Y/Direction
+
+> Default: (0, 0, Down)
+
+These properties define the initial position and facing direction of the player when the scene
+starts.
+
+They are overridden when the player is moved programmatically (using a `Go To Scene` event) or
+by user input.
+
+### Drawing Priority
+
+> Default: 2
+
+The drawing priority determines whether the player is drawn in front of or behind other elements on
+the screen (if you're used to CSS' `z-index`, this is the same, but reversed).
+
+The lower the drawing priority, the more "in front" the player will be drawn compared to other
+elements.
+
+### Collision Group
+
+> Default: 0
+
+The collision group determines which other objects the player can collide with. Objects in the same
+collision group will **not** interact with each other, while objects in different groups will.
+
+See it as friendly fire: objects in the same group won't hurt each other, but objects in different
+groups will.
+
+## Events
+
+The player doesn't have its own event categories like actors, because it would be redundant with
+the scene's events. See the [Scenes documentation](/docs/content/scenes#events) for more details.

@@ -1,0 +1,67 @@
+# Actors
+
+Actors are objects in the game that can move, interact with the environment, and respond to player
+input or other events. They are typically represented by sprites and can have various properties
+such as position, direction, and collision behavior. They are usually NPCs (non-player characters),
+bouncing platforms, or interactive objects within the scene.
+
+<img src="/images/actor-props.png" alt="Actor form example" height={500} className="rounded-xl" />
+
+## Properties
+
+### X/Y/Direction
+
+> Default: (0, 0, Down)
+
+These properties define the initial position and facing direction of the actor when the scene
+starts. You can change these properties at any time using events.
+
+## Advanced Properties
+
+### Drawing Priority
+
+> Default: 2
+
+The drawing priority determines whether the actor is drawn in front of or behind other elements on
+the screen (if you're used to CSS' `z-index`, this is the same, but reversed).
+
+The lower the drawing priority, the more "in front" the actor will be drawn compared to other elements.
+
+### Collision Group
+
+> Default: 0
+
+The collision group determines which other objects the actor can collide with. Objects in the same
+collision group will **not** interact with each other, while objects in different groups will.
+
+See it as friendly fire: objects in the same group won't hurt each other, but objects in different
+groups will.
+
+### Reaction
+
+> Default: True
+
+Determines whether the actor reacts to interactions with the player (e.g if it turns to face the
+player).
+
+### Pass Through
+
+> Default: False
+
+Determines whether the player can pass through this actor. If set to `true`, even if the actor
+and the player are not in the same collision group (i.e., would normally collide), the player will
+still be able to pass through the actor while still triggering any onCollide events.
+
+## Events
+
+Actors have five event categories:
+- **On Init**: Triggered when the scene starts
+- **On Collide**: Triggered when the player or a projectile collides with the actor
+- **On Interact**: Triggered when the player interacts with the actor (using the A button)
+- **On Update**: Triggered every frame while the actor is active
+- **On Hit**: Triggered when the actor takes damage from the player's melee weapon
+
+:::warning
+On Update events are triggered **every frame** while the actor is active, so be cautious with heavy
+computations to avoid performance issues.
+:::

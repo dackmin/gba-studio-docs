@@ -1,0 +1,44 @@
+# Backgrounds
+
+Backgrounds in GBA Studio represent your whole scene.
+
+<img src="/images/background-import.png" alt="Import background example" height={500} className="rounded-xl" />
+
+<br /><br />
+
+They are usually created in tools like [Tiled](https://www.mapeditor.org/) or [Aseprite](https://www.aseprite.org/)/[Libresprite](https://libresprite.github.io/).
+
+## Limitations
+
+- Backgrounds sizes should be at least 256x256px (Butano restricts them to 256px multiples)
+- Backgrounds must use a palette with a maximum of 256 colors.
+- Backgrounds cannot have transparency (yet)
+- Backgrounds cannot be animated (yet)
+- Large backgrounds will be split into 256x256px smaller backgrounds
+
+### Tiles
+
+One of the most gruesome limitations is that backgrounds cannot be composed of more than
+~1000 tiles (even before counting sprites that add up to this count).
+
+A `tile`, in this context, is an 8x8px block of pixels that makes up a portion of the
+background, in any direction.
+
+If we take this tile as an example (it's not really 8px, it's just for illustration purposes):
+
+<div className="flex items-center gap-4">
+<img src="/images/tile.png" alt="Tile example" height={64} />
+<img src="/images/tile.png" alt="Tile example" height={64} className="rotate-90" />
+<img src="/images/tile.png" alt="Tile example" height={64} className="rotate-180" />
+<img src="/images/tile.png" alt="Tile example" height={64} className="rotate-270" />
+</div>
+
+<br />
+
+All of these are counted the same towards the tile limit. It's the same tile, but rotated 4 times.
+
+:::warning
+If your background is too large and is cut into smaller pieces, keep in mind that four backgrounds
+can be displayed simultaneously on the screen, dividing the maximum tile count among them, so each
+smaller background cannot be more than ~250 tiles.
+:::
