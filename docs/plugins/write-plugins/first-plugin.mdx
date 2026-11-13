@@ -1,0 +1,164 @@
+---
+title: Your First Plugin
+sidebar_position: 0
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Your First Plugin
+
+This tutorial will help you create your first GBA Studio plugin, composed of a `log` function and
+a new event type.
+
+## Create the Plugin Manifest
+
+The first building block of your plugin is the manifest. The manifest lives in a `plugin.json`
+file at the root of your plugin folder.
+
+Here's an example of a basic `plugin.json` manifest:
+
+```json title="plugin.json"
+{
+  "id": "my-first-plugin",
+  "name": "My First Plugin",
+  "version": "0.1.0",
+  "author": "My Name",
+  "description": "A simple plugin for GBA Studio"
+}
+```
+
+See the [Manifest](../api-reference/manifest) documentation for more details on the plugin
+manifest structure.
+
+## Events
+
+You can register new event types in your plugin by adding an `events` array to your `plugin.json`
+file (see [Events](../api-reference/events) for more information).
+
+For this tutorial, we will add a new `Log Message` event that will simply log to the emulator debug
+logs.
+
+```json title="plugin.json"
+{
+  "id": "my-first-plugin",
+  "name": "My First Plugin",
+  "version": "0.1.0",
+  "author": "My Name",
+  "description": "A simple plugin for GBA Studio",
+  // diff-add-start
+  "events": [
+    {
+      "id": "log",
+      "name": "Log Message",
+      "description": "Writes the message to the log, several times.",
+      "keywords": ["debug", "print"],
+      "handler": "log_message::log",
+      "fields": [
+        { "key": "message", "label": "Message", "type": "text", "default": "Hello" },
+        { "key": "count", "label": "Repeat", "type": "number", "default": 1, "unit": "times" },
+        {
+          "key": "loud",
+          "label": "Loud",
+          "type": "boolean",
+          "default": false,
+          "text": "Add an exclamation mark"
+        },
+        {
+          "key": "level",
+          "label": "Level",
+          "type": "select",
+          "default": "info",
+          "options": [
+            { "value": "info", "label": "Info" },
+            { "value": "warning", "label": "Warning" }
+          ]
+        }
+      ]
+    }
+  ]
+  // diff-add-end
+}
+```
+
+Once your `plugin.json` file is ready, add your plugin like a normal plugin to the Plugin Manager
+and enable it.
+
+You should then be able to see the new event show up in the events catalogue:
+
+<img src="/images/plugins-event-catalogue.png" alt="Event Catalogue" height={400} className="rounded-xl" />
+
+<br /><br />
+
+When you add it to any events list, the settings that come with it should also be visible:
+
+<img src="/images/plugins-event.png" alt="Event Settings" height={400} className="rounded-xl" />
+
+## Native Code
+
+Now that your event is registered, you need to add the corresponding native code that will be
+executed when the event is triggered.
+
+If we wanted to implement the `Log Message` event, we would create a corresponding C++ function
+that matches the handler specified in the event manifest's `handler` property (`log_message::log`):
+
+<Tabs>
+<TabItem value="log.h" label="log.h">
+
+```cpp title="include/log.h"
+#ifndef LOG_H
+#define LOG_H
+
+#include <bn_log.h>
+#include <neo_types.h>
+
+#include "game.h"
+
+namespace log_message
+{
+  void log(neo::game* game, const neo::types::plugin_event* e);
+}
+
+#endif // LOG_H
+```
+
+</TabItem>
+<TabItem value="log.cpp" label="log.cpp">
+
+```cpp title="src/log.cpp"
+#include <bn_log.h>
+#include <neo_types.h>
+
+#include "game.h"
+#include "log.h"
+
+namespace log_message
+{
+  void log(neo::game* game, const neo::types::plugin_event* e)
+  {
+    const int count = e->as_int(game->variables, "count", 1);
+
+    for (int i = 0; i < count; ++i)
+    {
+      BN_LOG(
+        e->as_string(game->variables, "level", "info"), ": ",
+        e->as_string(game->variables, "message"),
+        e->as_bool(game->variables, "loud") ? "!" : ""
+      );
+    }
+  }
+}
+```
+
+</TabItem>
+</Tabs>
+
+<br /><br />
+
+:::info
+As you can see in the log.cpp file, the parameters are retrieved using the `event->as_*` methods,
+which allow you to access the game's variables in a type-safe manner. This is because in GBA
+Studio, almost all the text/number fields are what we call Dynamic Values: their value is either
+raw (and untyped, it's basically all just text) or determined at runtime using variables. See
+[Dynamic Values](/docs/misc/technical-details#dynamic-values) for more information.
+:::

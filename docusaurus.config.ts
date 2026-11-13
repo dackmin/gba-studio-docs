@@ -1,6 +1,7 @@
 import { themes as prismThemes } from 'prism-react-renderer';
 import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import { classNames } from '@junipero/core';
 
 const config: Config = {
   title: 'GBA Studio',
@@ -123,7 +124,36 @@ const config: Config = {
     },
     prism: {
       theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      darkTheme: prismThemes.oneDark,
+      magicComments: [
+        {
+          className: 'theme-code-block-highlighted-line',
+          line: 'highlight-next-line',
+          block: { start: 'highlight-start', end: 'highlight-end' },
+        },
+        {
+          className: classNames(
+            'bg-green-300/20 dark:bg-green-900/20 mx-[calc(-1*var(--ifm-pre-padding))]',
+            'relative px-[var(--ifm-pre-padding)]',
+            'before:content-["+"] before:flex before:absolute before:left-0 before:top-1/2',
+            'before:h-full before:items-center before:text-green-500 before:px-2',
+            'before:-translate-y-1/2 before:select-none',
+          ),
+          line: 'diff-add',
+          block: { start: 'diff-add-start', end: 'diff-add-end' },
+        },
+        {
+          className: classNames(
+            'bg-red-300/20 dark:bg-red-900/20 mx-[calc(-1*var(--ifm-pre-padding))]',
+            'relative px-[var(--ifm-pre-padding)]',
+            'before:content-["-"] before:flex before:absolute before:left-0 before:top-1/2',
+            'before:h-full before:items-center before:text-red-500 before:px-2',
+            'before:-translate-y-1/2 before:select-none',
+          ),
+          line: 'diff-del',
+          block: { start: 'diff-del-start', end: 'diff-del-end' },
+        },
+      ],
     },
   } satisfies Preset.ThemeConfig,
 };
