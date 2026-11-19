@@ -1,3 +1,115 @@
 # Events
 
-TODO
+Plugins can define new types of events that can be added to the editor.
+
+```json
+{
+  "id": "log",
+  "name": "Log Message",
+  "handler": "log_message::log",
+  "fields": [
+    { "key": "message", "label": "Message", "type": "text", "default": "Hello" }
+  ]
+}
+```
+
+## Properties
+
+| Property      | Type       | Required | Description                                                                     |
+| ------------- | ---------- | -------- | ------------------------------------------------------------------------------- |
+| `id`          | `string`   | Yes      | Identifier of the event, unique within the plugin.                              |
+| `handler`     | `string`   | Yes      | The native function called when the event runs, like `log_message::log`.        |
+| `name`        | `string`   | No       | Name shown in the events catalogue. Defaults to the `id`.                       |
+| `description` | `string`   | No       | Description shown above the settings of the event.                              |
+| `keywords`    | `string[]` | No       | Extra search terms to find the event in the catalogue.                          |
+| `fields`      | `Field[]`  | No       | The settings of the event. See [Fields](#fields).                               |
+
+<br />
+
+:::info
+The `handler` is the fully qualified name of a C++ function, with namespaces separated by `::`. It
+receives the game and the event as parameters:
+
+```cpp
+void log(neo::game* game, const neo::types::plugin_event* e);
+```
+
+See the [First Plugin](../write-plugins/first-plugin) guide for a complete example, including
+native code.
+:::
+
+:::info
+Internally, a plugin event is stored as `plugin:<pluginId>:<eventId>` (for example
+`plugin:log-message:log`), which is what you will see in the content files of a project.
+:::
+
+<br />
+
+### Fields
+
+Fields are the settings displayed in the editor when the event is added to a list of events. Their
+values are available in the handler through the `as_int`, `as_bool` and `as_string` methods of the
+event, using the field `key`.
+
+| Property  | Type                          | Required | Description                                                                                |
+| --------- | ----------------------------- | -------- | ------------------------------------------------------------------------------------------ |
+| `key`     | `string`                      | Yes      | Name used to read the value from native code. Unique within the event.                     |
+| `type`    | `string`                      | Yes      | The [type of the field](#field-types).                                                     |
+| `label`   | `string`                      | No       | Label shown above the field. Defaults to the `key`.                                        |
+| `default` | `DynamicValue`                | No       | Value used when the user hasn't changed the field. See [Dynamic Values](./dynamic-values). |
+| `unit`    | `string`                      | No       | Unit displayed after a `number` or `text` field, like `ms` or `times`.                     |
+| `text`    | `string`                      | No       | Text displayed next to the checkbox of a `boolean` field.                                  |
+| `options` | `(string \| Option)[]`        | No       | The choices of a `select` field. See [Select options](#select-options).                    |
+
+:::warning
+The `key` must start with a letter or `_`, followed by letters, numbers or `_`.
+:::
+
+:::info
+If a field has no `default`, a `number` field falls back to `0`, a `boolean` field to `false`, and
+everything else to an empty string.
+:::
+
+### Field types
+
+| Type         | Description                                                                          |
+| ------------ | ------------------------------------------------------------------------------------ |
+| `number`     | A number. Can also be set from a variable.                                           |
+| `text`       | A text. Can also be set from a variable.                                             |
+| `boolean`    | A checkbox.                                                                          |
+| `select`     | A list of predefined choices.                                                        |
+| `sprite`     | A sprite of the project (or of a plugin).                                            |
+| `background` | A background of the project (or of a plugin).                                        |
+| `font`       | A font of the project (or of a plugin).                                              |
+| `sound`      | A sound effect of the project (or of a plugin).                                      |
+| `music`      | A music of the project (or of a plugin).                                             |
+
+:::info
+`number` and `text` fields are [Dynamic Values](./dynamic-values): the
+user can either type a raw value or pick a variable (or script parameter), and the value is
+resolved when the event runs (it's done automatically, no extra work needed).
+:::
+
+### Select options
+
+Each option of a `select` field is either a plain string, used both as value and as label, or an
+object:
+
+| Property | Type     | Required | Description                                            |
+| -------- | -------- | -------- | ------------------------------------------------------ |
+| `value`  | `string` | Yes      | The value passed to the native code.                   |
+| `label`  | `string` | No       | Label shown in the editor. Defaults to the `value`.    |
+
+```json
+{
+  "key": "level",
+  "label": "Level",
+  "type": "select",
+  "default": "info",
+  "options": [
+    "debug",
+    { "value": "info", "label": "Info" },
+    { "value": "warning", "label": "Warning" }
+  ]
+}
+```

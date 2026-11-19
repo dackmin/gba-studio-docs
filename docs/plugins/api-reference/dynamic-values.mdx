@@ -1,0 +1,148 @@
+# Dynamic Values
+
+Dynamic values are values that can either be raw (a number, a string or a boolean) or a reference
+to a variable or an attribute. They are resolved at runtime when the variable is used.
+
+```json {6-9} title="content/scene_0.json"
+{
+  "type": "scene",
+  "name": "Scene 0",
+  "events": [{
+    "type": "fade-in",
+    "duration": {
+      "type": "variable",
+      "name": "GlobalFadeDuration"
+    }
+  }]
+}
+```
+
+## Properties
+
+If it's not a raw value (number, string or boolean), it must be a reference to a variable or attribute:
+
+| Property | Type       | Required | Description                                                                 |
+| -------- | ---------- | -------- | --------------------------------------------------------------------------- |
+| `type`   | `"variable"`, `"player-attribute"`,`"direction"`, `"camera"`,`"collision-side"`,`"scene"`,`"actor"` | Yes | The type of reference the dynamic value represents. |
+| `name`  | `string`      | Yes       | The reference name of the variable or attribute.                         |
+
+## Types
+
+### `"variable"`
+
+Represents a reference to a variable. The `name` property should be the name of the variable.
+
+```json
+{
+  "type": "variable",
+  "name": "MyVariable"
+}
+```
+
+### `"player-attribute"`
+
+Represents a reference to a player attribute.
+
+Available attributes:
+- `x`
+- `y`
+- `direction`
+- `scene`
+
+```json
+{
+  "type": "player-attribute",
+  "name": "x"
+}
+```
+
+### `"direction"`
+
+Represents a direction.
+
+Available directions:
+- `up`
+- `down`
+- `left`
+- `right`
+
+In some cases:
+- `up_left`
+- `up_right`
+- `down_left`
+- `down_right`
+
+In rare cases:
+- `towards_player`
+- `from_player`
+
+```json
+{
+  "type": "direction",
+  "name": "up"
+}
+```
+
+### `"camera"`
+
+Represents a reference to the camera.
+
+Available camera references (only camera edges for now):
+- `left`
+- `right`
+- `top`
+- `bottom`
+
+```json
+{
+  "type": "camera",
+  "name": "left"
+}
+```
+
+### `"collision-side"`
+
+Represents the last collision event side of a non-player object.
+
+:::info
+It allows you to determine which action to choose between, for example, "loose life" or
+"squish"/"kill" when your player jumps on an actor (e.g an enemy). In this particular example, the
+`collision-side` will be `up` if the player lands on top of the actor, or `left`/`right` if the
+player does not jump before colliding with the actor.
+:::
+
+Available collision sides:
+- `none` (no collision has occurred)
+- `up`
+- `down`
+- `left`
+- `right`
+
+```json
+{
+  "type": "collision-side",
+  "name": "up"
+}
+```
+
+### `"scene"`
+
+Represents a reference to a scene (mostly useful to compare player's current scene).
+
+```json
+{
+  "type": "scene",
+  "name": "scene-id"
+}
+```
+
+### `"actor"`
+
+Represents a reference to an actor.
+
+```json
+{
+  "type": "actor",
+  "name": "actor-id"
+}
+```

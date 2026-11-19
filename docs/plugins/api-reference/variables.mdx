@@ -1,0 +1,72 @@
+# Variables
+
+A variables registry defines the set of variables available from a plugin.
+It is represented by a JSON file named `variables_<key>.json` (or `variables.json`) in the `content`
+folder of the plugin.
+See the [JSON Schema](https://github.com/dackmin/gba-studio/tree/main/public/templates/commons/.schemas/variable.json) for reference.
+
+```json title="my-plugin/content/variables.json"
+{
+  "type": "variables",
+  "variables": [
+    { "id": "counter", "name": "Counter", "type": "value", "default": "0" }
+  ]
+}
+```
+
+## Properties
+
+| Property    | Type          | Required | Description                                                                                   |
+| ----------- | ------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `type`      | `"variables"` | Yes      | Must be `"variables"`.                                                                        |
+| `variables` | `Variable[]`  | Yes      | The list of variables defined by the plugin.                                                  |
+
+## Variable
+
+Each entry of `variables` (the registry) is a `variable`, and accepts the following properties:
+
+| Property      | Type           | Required | Description                                                                |
+| ------------- | -------------- | -------- | -------------------------------------------------------------------------- |
+| `id`          | `string`       | Yes      | Identifier of the variable, see [Identifiers](./manifest#identifiers)      |
+| `type`        | `"variable"`   | Yes      | Must be `"variable"`.                                                      |
+| `name`        | `string`       | Yes      | Name shown in the editor.                                                  |
+| `defaultValue`| `DynamicValue` | No       | The default value of the variable. See [Dynamic Values](./dynamic-values). |
+
+:::warning
+Two variables of the same plugin can't have the same `name`.
+:::
+
+## Native code
+
+In the native code of your plugin, use the event passed to your handler to access the variables of
+your plugin, using their `name`:
+
+```cpp
+void log(neo::game* game, const neo::types::plugin_event* e)
+{
+  if (e->has_variable(game->variables, "Counter"))
+  {
+    neo::variables::variable& counter = e->variable(game->variables, "Counter");
+
+    counter.set_int(counter.as_int() + 1);
+  }
+}
+```
+
+| Method                                         | Description                                                           |
+| ---------------------------------------------- | --------------------------------------------------------------------- |
+| `e->has_variable(game->variables, name)`       | Whether the plugin declares a variable with this `name`.              |
+| `e->variable(game->variables, name)`           | The variable, to read or write. The game stops if it doesn't exist.   |
+
+:::warning
+Don't confuse `e->variable()` with `e->as_int()` and friends: those read the **fields of the event**
+(see [Events](./events)), and fall back to a default value when the field doesn't exist.
+:::
+
+:::info
+In order to have a deterministic memory layout, numbers inside variables are clamped to the
+range `-99999` to `999999`.
+```
+
+The variables of a plugin are namespaced to avoid clashes with the project and with other plugins
+(`Counter` is stored as `<pluginId>_Counter`), which `e->variable()` takes care of for you.

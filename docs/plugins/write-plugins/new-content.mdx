@@ -1,0 +1,128 @@
+---
+sidebar_position: 1
+---
+
+# New Content
+
+Besides new events, a plugin can ship a variety of new content like scripts, variables, or assets.
+They work exactly like the ones inside of a project, except that they live inside the
+plugin folder, and are available to every project that uses the plugin.
+
+There's nothing to declare in the [manifest](../api-reference/manifest): they are discovered from
+the `content` folder of the plugin (just like game files), based on the file name.
+
+```
+log-message/
+├── plugin.json
+├── includes/
+    └── log.h
+├── src/
+    └── log.cpp
+├── graphics/
+    └── map.bmp
+└── content/
+    ├── variables.json
+    ├── script_log-twice.json
+    └── background_map.json
+```
+
+To illustrate this in our example, let's create a `content/variables.json` file with the following
+content:
+
+```json title="content/variables.json"
+{
+  "type": "variables",
+  "variables": [
+    {
+      "type": "number",
+      "name": "counter",
+      "defaultValue": 0
+    }
+  ]
+}
+```
+
+And a new script called "Log Twice" in a `content/script_log-twice.json` file with the following
+content:
+
+```json title="content/script_log-twice.json"
+{
+  "type": "script",
+  "name": "Log Twice",
+  "events": [
+    {
+      "type": "set-variable",
+      "name": "counter",
+      "operation": "increment",
+      "value": 1
+    },
+    {
+      "type": "plugin:log-message:log",
+      "params": {
+        "message": "First log"
+      }
+    },
+    {
+      "type": "set-variable",
+      "name": "counter",
+      "operation": "increment",
+      "value": 1
+    },
+    {
+      "type": "plugin:log-message:log",
+      "params": {
+        "message": "Second log"
+      }
+    }
+  ]
+}
+```
+
+And we are going to edit our `src/log.cpp` file to log the value of the "Counter" variable every
+time the "Log Twice" script is executed. `e->variable()` gives access to a variable of the plugin
+using the name it has in the plugin (see [Variables](../api-reference/variables#native-code)):
+
+```cpp title="src/log.cpp"
+#include <bn_log.h>
+#include <neo_types.h>
+
+#include "game.h"
+#include "log.h"
+
+namespace log_message
+{
+  void log(neo::game* game, const neo::types::plugin_event* e)
+  {
+    const int count = e->as_int(game->variables, "count", 1);
+    // diff-add-start
+    const int counter = e->has_variable(game->variables, "Counter")
+      ? e->variable(game->variables, "Counter").as_int() : 0;
+    // diff-add-end
+
+    for (int i = 0; i < count; ++i)
+    {
+      BN_LOG(
+        e->as_string(game->variables, "level", "info"), ": ",
+        e->as_string(game->variables, "message"),
+        e->as_bool(game->variables, "loud") ? "!" : "",
+        // diff-add-start
+        counter
+        // diff-add-end
+      );
+    }
+  }
+}
+```
+
+Returning to GBA Studio, our new "Log Twice" script should be available in the "Execute Script"
+event list:
+
+<img src="/images/plugin-script.png" alt="Plugin Script" className="rounded-xl" height={300} />
+
+And if we execute this event on any of our scenes, we should be able to see the value of the
+"Counter" variable logged twice in the console:
+
+```text
+[WARN] GBA Debug: info: First log1
+[WARN] GBA Debug: info: Second log2
+```

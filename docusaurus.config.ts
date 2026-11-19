@@ -127,7 +127,7 @@ const config: Config = {
       darkTheme: prismThemes.oneDark,
       magicComments: [
         {
-          className: 'theme-code-block-highlighted-line',
+          className: 'theme-code-block-highlighted-line bg-black/5! dark:bg-white/10!',
           line: 'highlight-next-line',
           block: { start: 'highlight-start', end: 'highlight-end' },
         },

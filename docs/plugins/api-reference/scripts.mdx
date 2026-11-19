@@ -1,0 +1,65 @@
+# Scripts
+
+A script in GBA Studio defines a sequence of events to be executed. See it as a shortcut to run
+multiple events at once.
+
+It is represented by a JSON file named `script_<key>.json` in the `content` folder of the plugin.
+See the [JSON Schema](https://github.com/dackmin/gba-studio/tree/main/public/templates/commons/.schemas/script.json) for reference.
+
+```json title="my-plugin/content/script_log-twice.json"
+{
+  "type": "script",
+  "name": "Log Twice",
+  "id": "log-twice",
+  "parameters": [{ "id": "amount", "name": "Amount", "type": "value" }],
+  "events": []
+}
+```
+
+## Properties
+
+| Property     | Type          | Required | Description                                                                                      |
+| ------------ | ------------- | -------- | ------------------------------------------------------------------------------------------------ |
+| `type`       | `"script"`    | Yes      | Must be `"script"`.                                                                              |
+| `name`       | `string`      | No       | Name of the script, shown in the editor. Defaults to the file key when loading.                  |
+| `id`         | `string`      | No       | Identifier of the script. Defaults to the file key (`log-twice` for `script_log-twice.json`).    |
+| `parameters` | `Parameter[]` | No       | Values the caller passes to the script, up to 10. See [Parameters](#parameters).                 |
+| `events`     | `Event[]`     | No       | The events the script runs, in order. Any event is allowed, including the ones added by plugins. |
+
+:::warning
+Two scripts of the same plugin can't have the same `name`. Names that only differ by case or
+punctuation are considered the same.
+:::
+
+### Parameters
+
+Each entry of `parameters` accepts the following properties:
+
+| Property | Type                                | Required | Description                                                            |
+| -------- | ----------------------------------- | -------- | ---------------------------------------------------------------------- |
+| `id`     | `string`                            | Yes      | Identifier of the parameter, see [Identifiers](./manifest#identifiers) |
+| `name`   | `string`                            | Yes      | Name shown in the editor.                                              |
+| `type`   | `"value"`, `"variable"`, `"actor"`  | Yes      | The kind of value the caller has to provide.                           |
+
+:::tip
+`"value"` is a [Dynamic Value](./dynamic-values), meaning it can be a raw value or a reference to a variable. It is more flexible
+than `"variable"`, but the latter is still here for convenience (or when you don't want a raw value).
+:::
+
+## How to use a parameter
+
+Inside a plugin script, refer to one of the script's parameters with `param:<parameterId>`:
+
+```json title="content/script_log-twice.json"
+{
+  "type": "script",
+  "name": "Log Twice",
+  "parameters": [{ "id": "amount", "name": "Amount", "type": "value" }],
+  "events": [
+    {
+      "type": "wait",
+      "duration": { "type": "variable", "name": "param:amount" }
+    }
+  ]
+}
+```

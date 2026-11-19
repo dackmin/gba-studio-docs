@@ -1,3 +1,84 @@
+---
+title: Manifest
+sidebar_position: 0
+---
+
 # Manifest
 
-TODO
+Every plugin has a `plugin.json` manifest at the root of its folder. It describes the plugin and
+eventually registers the new event types it adds to the editor.
+
+```json title="plugin.json"
+{
+  "$schema": "https://raw.githubusercontent.com/dackmin/gba-studio/main/public/templates/commons/.schemas/plugin.json",
+  "id": "log-message",
+  "name": "Log Message",
+  "version": "1.0.0",
+  "description": "Prints a message to the emulator log.",
+  "author": "GBA Studio",
+  "events": [
+    {
+      "id": "log",
+      "name": "Log Message",
+      "handler": "log_message::log",
+      "fields": [
+        { "key": "message", "label": "Message", "type": "text", "default": "Hello" }
+      ]
+    }
+  ]
+}
+```
+
+## Properties
+
+| Property      | Type       | Required | Description                                                            |
+| ------------- | ---------- | -------- | ---------------------------------------------------------------------- |
+| `id`          | `string`   | Yes      | Unique identifier of the plugin. See [Identifiers](#identifiers).      |
+| `name`        | `string`   | No       | Name shown in the editor. Defaults to the `id`.                        |
+| `version`     | `string`   | No       | Version of the plugin.                                                 |
+| `description` | `string`   | No       | Short description of what the plugin does.                             |
+| `author`      | `string`   | No       | Author of the plugin.                                                  |
+| `events`      | `Event[]`  | No       | The [event types](./events) the plugin adds. Event ids must be unique. |
+
+## Identifiers
+
+Plugin ids (and more generally event ids and parameter ids) may only contain letters, numbers, `-`
+and `_`, and must start with a letter.
+
+:::warning
+Two plugins in the same project can't share an id. Ids that only differ by case or punctuation
+(like `my-plugin` and `my_plugin`) are also considered to be the same, because the names of the
+generated native code are derived from them.
+:::
+
+## What is not in the manifest
+
+The manifest only declares events. Everything else a plugin ships is discovered from its folder, so
+there is nothing to register:
+
+```
+my-plugin/
+├── plugin.json
+├── include/                 Native headers
+├── src/                     Native sources
+├── graphics/                Image files (.bmp)
+├── audio/                   Sound (.wav) and music (.mod) files
+└── content/
+    ├── sprite_*.json        Sprites
+    ├── background_*.json    Backgrounds
+    ├── font_*.json          Fonts
+    ├── sound_*.json         Sounds
+    ├── music_*.json         Music
+    ├── script_*.json        Scripts
+    └── variables*.json      Variables
+```
+
+The files in `content/` use the same format as the content files of a project, and the same
+[JSON schemas](https://github.com/dackmin/gba-studio/tree/main/public/templates/commons/.schemas).
+Their `path` is relative to the plugin folder.
+
+:::info
+To avoid clashes with the project and other plugins, everything a plugin ships is namespaced
+with the plugin id. Variables and scripts are referenced by the id they have inside the plugin
+(`Counter`, `log-twice`); they are rewritten to `plugin:<pluginId>:<id>` when the plugin is loaded.
+:::
